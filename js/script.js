@@ -5,7 +5,7 @@ const navLinks = document.querySelectorAll('.nav-link');
 
 navToggle.addEventListener('click', () => {
     navMenu.classList.toggle('active');
-    
+
     // Animação do hamburger
     const spans = navToggle.querySelectorAll('span');
     if (navMenu.classList.contains('active')) {
@@ -36,11 +36,11 @@ navLinks.forEach(link => {
         e.preventDefault();
         const targetId = link.getAttribute('href');
         const targetSection = document.querySelector(targetId);
-        
+
         if (targetSection) {
             const headerHeight = document.getElementById('header').offsetHeight;
             const targetPosition = targetSection.offsetTop - headerHeight;
-            
+
             window.scrollTo({
                 top: targetPosition,
                 behavior: 'smooth'
@@ -55,7 +55,7 @@ let lastScroll = 0;
 
 window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
-    
+
     if (currentScroll > 100) {
         header.style.background = 'rgba(26, 26, 46, 0.98)';
         header.style.padding = '0.5rem 0';
@@ -63,7 +63,7 @@ window.addEventListener('scroll', () => {
         header.style.background = 'rgba(26, 26, 46, 0.95)';
         header.style.padding = '1rem 0';
     }
-    
+
     lastScroll = currentScroll;
 });
 
@@ -71,7 +71,7 @@ window.addEventListener('scroll', () => {
 window.addEventListener('scroll', () => {
     let current = '';
     const sections = document.querySelectorAll('section');
-    
+
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
         const sectionHeight = section.clientHeight;
@@ -79,7 +79,7 @@ window.addEventListener('scroll', () => {
             current = section.getAttribute('id');
         }
     });
-    
+
     navLinks.forEach(link => {
         link.classList.remove('active');
         if (link.getAttribute('href') === `#${current}`) {
@@ -106,11 +106,11 @@ const observer = new IntersectionObserver((entries) => {
 // Adicionar animação aos cards
 document.addEventListener('DOMContentLoaded', () => {
     const animatedElements = document.querySelectorAll('.service-card, .differential-card, .infra-card, .benefit-item');
-    
+
     animatedElements.forEach((el, index) => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(30px)';
-        el.style.transition = `all 0.3s ease ${index * 0.05}s`;
+        el.style.transition = `all 0.45s ease ${index * 0.08}s`;
         observer.observe(el);
     });
 });
@@ -121,7 +121,7 @@ const formMessage = document.getElementById('formMessage');
 
 contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    
+
     // Coletar dados do formulário
     const formData = {
         nome: document.getElementById('nome').value,
@@ -131,13 +131,13 @@ contactForm.addEventListener('submit', async (e) => {
         cidade: document.getElementById('cidade').value,
         mensagem: document.getElementById('mensagem').value
     };
-    
+
     // Desabilitar botão durante envio
     const submitBtn = contactForm.querySelector('button[type="submit"]');
     const originalText = submitBtn.innerHTML;
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<span>Enviando...</span> <i class="fas fa-spinner fa-spin"></i>';
-    
+
     try {
         // Enviar para o backend
         const response = await fetch('/api/contato', {
@@ -147,14 +147,14 @@ contactForm.addEventListener('submit', async (e) => {
             },
             body: JSON.stringify(formData)
         });
-        
+
         const result = await response.json();
-        
+
         if (result.success) {
             formMessage.className = 'form-message success';
             formMessage.textContent = result.message;
             contactForm.reset();
-            
+
             // Remover mensagem após 5 segundos
             setTimeout(() => {
                 formMessage.style.display = 'none';
@@ -163,7 +163,7 @@ contactForm.addEventListener('submit', async (e) => {
             formMessage.className = 'form-message error';
             formMessage.textContent = result.message;
         }
-        
+
     } catch (error) {
         formMessage.className = 'form-message error';
         formMessage.textContent = 'Erro ao enviar mensagem. Por favor, tente novamente.';
@@ -186,7 +186,7 @@ inputs.forEach(input => {
             input.style.borderColor = 'rgba(40, 167, 69, 0.5)';
         }
     });
-    
+
     input.addEventListener('focus', () => {
         input.style.borderColor = 'var(--primary-color)';
     });
@@ -205,13 +205,13 @@ emailInput.addEventListener('blur', () => {
 const telefoneInput = document.getElementById('telefone');
 telefoneInput.addEventListener('input', (e) => {
     let value = e.target.value.replace(/\D/g, '');
-    
+
     if (value.length <= 10) {
         value = value.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
     } else {
         value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
     }
-    
+
     e.target.value = value;
 });
 
@@ -221,7 +221,7 @@ const maxLength = 500;
 
 mensagemTextarea.addEventListener('input', (e) => {
     const length = e.target.value.length;
-    
+
     if (length > maxLength) {
         e.target.value = e.target.value.substring(0, maxLength);
     }
@@ -231,7 +231,7 @@ mensagemTextarea.addEventListener('input', (e) => {
 window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
     const hero = document.querySelector('.hero');
-    
+
     if (hero && scrolled < window.innerHeight) {
         hero.style.transform = `translateY(${scrolled * 0.5}px)`;
     }
